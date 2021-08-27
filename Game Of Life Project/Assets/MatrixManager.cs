@@ -51,11 +51,11 @@ public class MatrixManager : MonoBehaviour
     void Update()
     {
         setElementOnClick();
-        //if (Time.fixedTime >= gameFrameStart) {
-        //updateGameOfLifeMAtrixValues();
-            //gamerule
-          //  gameFrameStart = Time.fixedTime + gameFrameLatency;
-        //}
+        if (Time.fixedTime >= gameFrameStart)
+        {
+            updateGameOfLifeMAtrixValues();
+            gameFrameStart = Time.fixedTime + gameFrameLatency;
+        }
     }
 
     private void updateGameOfLifeMAtrixValues()
