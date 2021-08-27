@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 293843555}
   - component: {fileID: 293843554}
   m_Layer: 0
-  m_Name: Matrix Manager
+  m_Name: Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,8 +155,10 @@ MonoBehaviour:
   xScale: 0.95
   yScale: 0.1
   zScale: 0.95
-  on: {r: 1, g: 1, b: 1, a: 1}
-  off: {r: 0, g: 0, b: 0, a: 1}
+  activeElementColor: {r: 1, g: 1, b: 1, a: 1}
+  deactiveElementColor: {r: 0, g: 0, b: 0, a: 1}
+  gameFrameLatency: 1
+  mirrorTheMatrix: 0
   gameBoard: {fileID: 1560667023}
   camera: {fileID: 963194227}
 --- !u!4 &293843555
