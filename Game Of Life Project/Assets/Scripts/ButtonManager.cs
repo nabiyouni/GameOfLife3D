@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -9,26 +10,30 @@ public class ButtonManager : MonoBehaviour
     public GameManager gameManager;
 
     public UnityEngine.UI.Button toggleStateButton;
-    public string startString = "Start";
-    public string stopString = "Stop";
+    private string startString = "Start";
+    private string stopString = "Stop";
+    public UnityEngine.UI.Button clearButton;
+    public UnityEngine.UI.Button randomButton;
 
-    // Start is called before the first frame update
     void Start()
     {
-        toggleStateButton.GetComponentInChildren<Text>().text = startString;
+        toggleStateButton.GetComponentInChildren<TextMeshProUGUI>().text = startString;
         gameManager.setRunState(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void toggleState()
     {
-        bool newState = toggleStateButton.GetComponentInChildren<Text>().text == startString;
-        toggleStateButton.GetComponentInChildren<Text>().text = newState ? stopString : startString;
+        bool newState = toggleStateButton.GetComponentInChildren<TextMeshProUGUI>().text == startString;
+        toggleStateButton.GetComponentInChildren<TextMeshProUGUI>().text = newState ? stopString : startString;
         gameManager.setRunState(newState);
+    }
+
+    public void clearScreen() {
+        gameManager.clearScreen();
+    }
+
+    public void randomizeScreen()
+    {
+        gameManager.randomizeScreen();
     }
 }

@@ -10,21 +10,20 @@ public class GameManager : MonoBehaviour
         public GameObject gameObject { get; set; }
     }
 
-    public const int rowsCount = 20;
-    public const int colsCount = 20;
-
-    public float xScale = 0.95f;
-    public float yScale = 0.1f;
-    public float zScale = 0.95f;
+    public int rowsCount = 38;
+    public int colsCount = 23;
 
     public Color activeElementColor = Color.white;
     public Color deactiveElementColor = Color.black;
+    private Material activeElementMaterial;
+    private Material deactiveElementMaterial;
 
     public float gameFrameLatency = 0.5f;
     private float gameFrameStart;
 
     public bool mirrorTheMatrix = false;
-    public GameObject gameBoard;
+    public GameObject parentTransform;
+    public GameObject sampleElement;
     public Element[,] elements;
     public Camera camera = new Camera();
 
@@ -35,16 +34,20 @@ public class GameManager : MonoBehaviour
     {
         gameFrameStart = Time.time + gameFrameLatency;
         elements = new Element[rowsCount, colsCount];
+
+        deactiveElementColor.a = 0.3f;
+        activeElementColor.a = 0.5f;
+
         for (int i = 0; i < rowsCount; i++)
         {
             for (int k = 0; k < colsCount; k++)
             {
-                elements[i, k].gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                elements[i, k].gameObject.transform.parent = gameBoard.transform;
+                elements[i, k].gameObject = GameObject.Instantiate(sampleElement);
+                elements[i, k].gameObject.GetComponent<Renderer>().material = sampleElement.GetComponent<Renderer>().material;
+                elements[i, k].gameObject.transform.parent = parentTransform.transform;
                 elements[i, k].gameObject.transform.position = new Vector3(i, 0, k);
-                elements[i, k].gameObject.transform.localScale = new Vector3(xScale, yScale, zScale);
                 var color = elements[i, k].value ? activeElementColor : deactiveElementColor;
-                elements[i, k].gameObject.GetComponent<Renderer>().material.SetColor("_Color", color);
+                elements[i, k].gameObject.GetComponent<Renderer>().material.color = color;
             }
         }
     }
@@ -55,12 +58,12 @@ public class GameManager : MonoBehaviour
         setElementOnClick();
         if (Time.fixedTime >= gameFrameStart && runState)
         {
-            updateGameOfLifeMAtrixValues();
+            updateGameOfLifeMatrixValues();
             gameFrameStart = Time.fixedTime + gameFrameLatency;
         }
     }
 
-    private void updateGameOfLifeMAtrixValues()
+    private void updateGameOfLifeMatrixValues()
     {
         var newMatrix = new bool[rowsCount, colsCount];
         for (int i = 0; i < rowsCount; i++)
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
             {
                 elements[i, k].value = newMatrix[i, k];
                 var color = newMatrix[i, k] ? activeElementColor : deactiveElementColor;
-                elements[i, k].gameObject.GetComponent<Renderer>().material.SetColor("_Color", color);
+                elements[i, k].gameObject.GetComponent<Renderer>().material.color = color;
             }
         }
     }
@@ -143,10 +146,42 @@ public class GameManager : MonoBehaviour
     {
         elements[row, col].value = !elements[row, col].value;
         var color = elements[row, col].value ? activeElementColor : deactiveElementColor;
-        elements[row, col].gameObject.GetComponent<Renderer>().material.SetColor("_Color", color);
+        elements[row, col].gameObject.GetComponent<Renderer>().material.color = color;
     }
 
     public void setRunState(bool state) {
         runState = state;
+    }
+
+    public void clearScreen()
+    {
+        for (int i = 0; i < rowsCount; i++)
+        {
+            for (int k = 0; k < colsCount; k++)
+            {
+                elements[i, k].value = false;
+                elements[i, k].gameObject.GetComponent<Renderer>().material.color = deactiveElementColor;
+            }
+        }
+    }
+
+    public void randomizeScreen()
+    {
+        for (int i = 0; i < rowsCount; i++)
+        {
+            for (int k = 0; k < colsCount; k++)
+            {
+                if (Random.Range(0, 2) == 1)
+                {
+                    elements[i, k].value = true;
+                    elements[i, k].gameObject.GetComponent<Renderer>().material.color = activeElementColor;
+                }
+                else {
+                    elements[i, k].value = false;
+                    elements[i, k].gameObject.GetComponent<Renderer>().material.color = deactiveElementColor;
+                }
+                
+            }
+        }
     }
 }
