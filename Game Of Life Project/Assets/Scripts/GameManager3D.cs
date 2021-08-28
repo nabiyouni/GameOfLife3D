@@ -10,7 +10,7 @@ public class GameManager3D : MonoBehaviour
         public GameObject gameObject { get; set; }
     }
 
-    private int rowsCount = 20;
+    private int rowsCount = 40;
     private int colsCount = 20;
     private int depsCount = 20;
 
@@ -18,6 +18,8 @@ public class GameManager3D : MonoBehaviour
     public Color deactiveElementColor = Color.black;
     private Material activeElementMaterial;
     private Material deactiveElementMaterial;
+    public Vector3 activeElementScale = new Vector3(0.9f, 0.9f, 0.9f);
+    public Vector3 deactiveElementScale = new Vector3(0.1f, 0.1f, 0.1f);
 
     public float gameFrameLatency = 0.5f;
     private float gameFrameStart;
@@ -51,6 +53,8 @@ public class GameManager3D : MonoBehaviour
                     elements[i, j, k].gameObject.transform.position = new Vector3(i, j, k);
                     var color = elements[i, j, k].value ? activeElementColor : deactiveElementColor;
                     elements[i, j, k].gameObject.GetComponent<Renderer>().material.color = color;
+                    var scale = elements[i, j, k].value ? activeElementScale : deactiveElementScale;
+                    elements[i, j, k].gameObject.transform.localScale = scale;
                 }
             }
         }
@@ -89,6 +93,8 @@ public class GameManager3D : MonoBehaviour
                     elements[i, j, k].value = newMatrix[i, j, k];
                     var color = newMatrix[i, j, k] ? activeElementColor : deactiveElementColor;
                     elements[i, j, k].gameObject.GetComponent<Renderer>().material.color = color;
+                    var scale = newMatrix[i, j, k] ? activeElementScale : deactiveElementScale;
+                    elements[i, j, k].gameObject.transform.localScale = scale;
                 }
             }
         }
@@ -168,6 +174,8 @@ public class GameManager3D : MonoBehaviour
         elements[row, col, dep].value = !elements[row, col, dep].value;
         var color = elements[row, col, dep].value ? activeElementColor : deactiveElementColor;
         elements[row, col, dep].gameObject.GetComponent<Renderer>().material.color = color;
+        var scale = elements[row, col, dep].value ? activeElementScale : deactiveElementScale;
+        elements[row, col, dep].gameObject.transform.localScale = scale;
     }
 
     public void setRunState(bool state)
@@ -185,6 +193,7 @@ public class GameManager3D : MonoBehaviour
                 {
                     elements[i, j, k].value = false;
                     elements[i, j, k].gameObject.GetComponent<Renderer>().material.color = deactiveElementColor;
+                    elements[i, j, k].gameObject.transform.localScale = deactiveElementScale;
                 }
             }
         }
@@ -202,11 +211,13 @@ public class GameManager3D : MonoBehaviour
                     {
                         elements[i, j, k].value = true;
                         elements[i, j, k].gameObject.GetComponent<Renderer>().material.color = activeElementColor;
+                        elements[i, j, k].gameObject.transform.localScale = activeElementScale;
                     }
                     else
                     {
                         elements[i, j, k].value = false;
                         elements[i, j, k].gameObject.GetComponent<Renderer>().material.color = deactiveElementColor;
+                        elements[i, j, k].gameObject.transform.localScale = deactiveElementScale;
                     }
 
                 }
