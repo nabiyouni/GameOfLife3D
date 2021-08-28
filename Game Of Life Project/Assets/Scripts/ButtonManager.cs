@@ -7,7 +7,7 @@ using TMPro;
 public class ButtonManager : MonoBehaviour
 {
     public GameObject parentCanvas;
-    public GameManager gameManager;
+    public GameManager3D gameManager;
 
     public UnityEngine.UI.Button toggleStateButton;
     private string startString = "Start";
